@@ -1,0 +1,220 @@
+/* ************************
+*    Alex Helfrich        *
+*    Comp 1302-04         *
+*    PresidentsAA Class   *
+*    Lab 6                *
+************************ */
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class PresidentsAA {
+	private ArrayList<String> presList;
+	
+	public PresidentsAA() {
+		presList = new ArrayList<String>();
+		
+		presList.add("George Washington");
+		presList.add("John Adams");
+		presList.add("Thomas Jefferson");
+		presList.add("James Madison");
+		presList.add("James Monroe");
+		presList.add("John Quincy Adams");
+		presList.add("Andrew Jackson");
+		presList.add("Martin Van Buren");
+		presList.add("William H. Harrison");
+		presList.add("John Tyler");
+	}
+	
+	public static void main(String args[]) {
+		PresidentsAA presAA = new PresidentsAA();
+		
+		System.out.printf("Enter which president: ");
+		Scanner input = new Scanner(System.in);
+		int index = input.nextInt() - 1; 
+		System.out.printf(presAA.presList.get(index) + "\n");
+	} //end main
+} //end class
+
+/* ************************
+*    Alex Helfrich        *
+*    Comp 1302-04         *
+*    PresidentsVec Class  *
+*    Lab 6                *
+************************ */
+
+import java.util.Vector;
+import java.util.Scanner;
+
+public class PresidentsVec {
+	private Vector<String> presList;
+	
+	public PresidentsVec () {
+		presList = new Vector<String>();
+		
+		presList.addElement("George Washington");
+		presList.addElement("John Adams");
+		presList.addElement("Thomas Jefferson");
+		presList.addElement("James Madison");
+		presList.addElement("James Monroe");
+		presList.addElement("John Quincy Adams");
+		presList.addElement("Andrew Jackson");
+		presList.addElement("Martin Van Buren");
+		presList.addElement("William H. Harrison");
+		presList.addElement("John Tyler");
+	}
+	
+	public static void main(String args[]) {
+		PresidentsVec presVec = new PresidentsVec();
+		
+		System.out.printf("Enter which president: ");
+		Scanner input = new Scanner(System.in);
+		int index = input.nextInt() - 1; 
+		System.out.printf(presVec.presList.get(index) + "\n");
+	} //end main
+} //end class
+
+/* ************************
+*    Alex Helfrich        *
+*    Comp 1302-04         *
+*    AccLinkedList Class  *
+*    Lab 6                *
+************************ */
+
+public class AccLinkedList {
+	private Account head = null;
+	private int count = 0;
+	
+	public AccLinkedList() {} 
+	
+	public void addItemBalance(Account a) {
+		if (count == 0) {
+			head = a;
+		} else {
+			if (count == 1) {
+				if (a.getBalance() < head.getBalance()) {
+					head.next = a;
+				} else {
+					a.next = head;
+					head = a;
+				} //.
+			} else {
+				if (a.getBalance() > head.getBalance()) {
+					a.next = head;
+					head = a;
+				} else {
+					Account previous = head;
+					Account current = head.next;
+					try {
+						while (!((a.getBalance() < previous.getBalance()) 
+							  && (a.getBalance() > current.getBalance())) ) {
+								  previous = current;
+								  current = current.next;
+							  }
+							a.next = current;
+							previous.next = a;
+					} catch (Exception nre) {
+						previous.next = a;
+					}
+				}
+				
+			}
+		}
+		count++; 
+	}
+	
+	public void display() {
+		Account item = head;
+		System.out.printf("No. of Items in List: " + count + "\n");
+		while (item != null) {
+			item.display();
+			item = item.next;
+		}
+	}
+	
+	public static void main(String args[]) {
+		Account ac1 = new Account(832, "George Thompson", 22000.00);
+		Account ac2 = new Account(922, "Sam Charles", 1338.42);
+		Account ac3 = new Account(1821, "Chester Chest", 8836.96);
+		Account ac4 = new Account(1857, "Sarah Stark", 32000.01);
+		Account ac5 = new Account(2201, "Amy Waterson", 100.01);
+		
+		AccLinkedList list1 = new AccLinkedList();
+		
+		list1.addItemBalance(ac1);
+		list1.addItemBalance(ac2);
+		list1.addItemBalance(ac3);
+		list1.addItemBalance(ac4);
+		list1.addItemBalance(ac5);
+		
+		list1.display();
+	} //end main
+} //end class
+
+/* *******************
+*   Alex Helfrich    *
+*   Comp 1302-04     *
+*   Account Class    *    
+*   Lab 6            *
+******************* */
+
+//Nothing has changed in this class
+
+public class Account {
+	private int acctNo;
+	private String owner;
+	private double balance;
+	public Account next = null;
+	
+	public Account() 
+	{
+		setAcctNo(0);
+		setOwner("");
+		setBalance(0.0);
+	}
+	
+	public Account(int acctNoIn, String ownerIn, double balanceIn) 
+	{
+		setAcctNo(acctNoIn);
+		setOwner(ownerIn);
+		setBalance(balanceIn);
+	}
+	
+	public int getAcctNo() {
+		return acctNo;
+	}
+	
+	public void setAcctNo(int acctNoIn) {
+		acctNo = acctNoIn;
+	}
+	
+	public String getOwner() {
+		return owner;
+	}
+	
+	public void setOwner(String ownerIn) {
+		owner = ownerIn;
+	}
+	
+	public double getBalance() {
+		return balance;
+	}
+	
+	public void setBalance(double balanceIn) {
+		balance = balanceIn;
+	}
+	
+	public void display() 
+	{
+		String output = "" + getAcctNo() + "\n" + getOwner() + "\n" +
+					    getBalance() + "\n";
+		System.out.printf(output);
+	}
+	
+	public static void main(String args[]) 
+	{
+		Account a1;
+		a1 = new Account(90002, "Susan Slater", 450.00);
+		a1.display();
+	} //end main
+} //end class

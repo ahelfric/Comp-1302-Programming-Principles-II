@@ -1,0 +1,611 @@
+/* **********************
+*     Alex Helfrich     *
+*     Comp 1302-04      *
+*     Patient Class     *
+*     Mini-Project 2    *
+********************** */
+
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.lang.Exception;
+
+public class Patient extends Person {
+	private String addr;
+	private String insCo;
+	private Appointment patAppt;
+	
+	public Patient() {
+		super();
+		addr = "";
+		insCo = "";
+		patAppt = new Appointment();
+	}
+	
+	public Patient(String IDIN, String passIn, String firstIn, String lastIn,
+				  String eIn, String addrIn, String insCoIn, Appointment apIn) {
+		super(IDIN, passIn, firstIn, lastIn, eIn);
+		addr = addrIn;
+		insCo = insCoIn;
+		patAppt = apIn;
+	}
+	
+	public void setAddr(String addrIn) {
+		addr = addrIn;
+	}
+	
+	public String getAddr() {
+		return addr;
+	}
+	
+	public void setInsCo(String insCoIn) {
+		insCo = insCoIn;
+	}
+	
+	public String getInsCo() {
+		return insCo;
+	}
+	
+	public void setApt(Appointment apIn) {
+		patAppt = apIn;
+	}
+	
+	public Appointment getApt() {
+		return patAppt;
+	} 
+	
+	public void select(String identifier) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(
+				"Patients.txt"));
+			String line;
+			
+			while((line = in.readLine()) != null) {
+				String[] interim = line.split(":");
+				if (interim[0].compareTo(identifier) == 0) {
+					super.setID(interim[0]);
+					super.setPassword(interim[1]);
+					super.setFirstName(interim[2]);
+					super.setLastName(interim[3]);
+					this.setAddr(interim[4]);
+					super.setEmail(interim[5]);
+					this.setInsCo(interim[6]);
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} //Finds all pertinent info from the Patient.txt file
+		
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(
+				"Appointments"));
+			String line;
+			
+			while((line = in.readLine()) != null) {
+				String[] interim = line.split(":");
+				if (super.getID().compareTo(interim[0]) == 0) {
+					Appointment apTemp = new Appointment();
+					apTemp.select(super.getID());
+					this.setApt(apTemp);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} //Finds the appointment pertaining to a patient, if one exists
+	}
+	
+	public void insert(String IDIN, String passIn, String firstIn, String lastIn,
+				       String addrIn, String eIn, String insCoIn) {
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
+								"Patients.txt", true)));
+			out.println(""); //assuming there is no empty line in the file
+			out.print(IDIN + ":" + passIn + ":" + firstIn + ":" + lastIn + ":" + 
+					  addrIn + ":" + eIn + ":" + insCoIn);
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void display() {
+		System.out.printf(this.toString());
+	}
+	
+	public String toString() {
+		String output;
+		output = (super.toString() + getAddr() + "\n" + getInsCo() + "\n"
+				 + getApt().toString() + "\n");
+		return output;
+	}
+	
+	public static void main(String args[]) {
+		Patient p1 = new Patient();
+		p1.select("A901");
+		p1.display();
+	} //end main
+} //end class
+
+/* **********************
+*     Alex Helfrich     *
+*     Comp 1302-04      *
+*     Dentist Class     *
+*     Mini-Project 2    *
+********************** */
+
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.lang.Exception;
+
+public class Dentist extends Person {
+	private String office;
+	private AppointmentList list;
+	
+	public Dentist() {
+		super();
+		office = "";
+	}
+	
+	public Dentist(String IDIN, String passIn, String firstIn, String lastIn,
+				   String eIn, String officeIn) {
+		super(IDIN, passIn, firstIn, lastIn, eIn);
+		office = officeIn;
+	}
+	
+	public void setOffice(String officeIn) {
+		office = officeIn;
+	}
+	
+	public String getOffice() {
+		return office;
+	}
+	
+	public void select(String identifier) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(
+				"Dentists.txt"));
+			String line;
+			
+			while((line = in.readLine()) != null) {
+				String[] interim = line.split(":");
+				if (interim[0].compareTo(identifier) == 0) {
+					super.setID(interim[0]);
+					super.setPassword(interim[1]);
+					super.setFirstName(interim[2]);
+					super.setLastName(interim[3]);
+					super.setEmail(interim[4]);
+					this.setOffice(interim[5]);
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(
+				"Appointments"));
+			String line;
+			
+			while((line = in.readLine()) != null) {
+				String[] interim = line.split(":");
+				if (super.getID().compareTo(interim[2]) == 0) {
+					Appointment apTemp = new Appointment();
+					apTemp.select(super.getID());
+					list.addAppointment(apTemp);
+				}
+			} //looks for dentist ID in appointments.txt, adds all appointments
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void insert(String IDIN, String passIn, String firstIn, String lastIn,
+				       String eIn, String officeIn) {
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
+								"Dentists.txt", true)));
+			out.println(""); //assuming there is no empty line in the file
+			out.print(IDIN + ":" + passIn + ":" + firstIn 
+						+ ":" + lastIn + ":" + eIn + ":" + officeIn);
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void display() {
+		System.out.printf(this.toString());
+	}
+	
+	public String toString() {
+		String output;
+		output = super.toString() + getOffice() + "\n" + list.toString();
+		return output;
+	}
+	
+	public static void main(String args[]) {
+		Dentist d1 = new Dentist();
+		d1.select("D201");
+		d1.display()
+	} //end main
+} //end class
+
+/* **********************
+*     Alex Helfrich     *
+*     Comp 1302-04      *
+*     Procedure Class   *
+*     Mini-Project 2    *
+********************** */
+
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.lang.Exception;
+
+public class Procedure {
+	private String procCode;
+	private String procName;
+	private String procDesc;
+	private double cost;
+	
+	public Procedure() {
+		procCode = "";
+		procName = "";
+		procDesc = "";
+		cost = 0.0;
+	}
+	
+	public Procedure(String procCodeIn, String procNameIn, String procDescIn,
+					 double costIn) {
+		procCode = procCodeIn;
+		procName = procNameIn;
+		procDesc = procDescIn;
+		cost = costIn;
+	}
+	
+	public void setProcCode(String procCodeIn) {
+		procCode = procCodeIn;
+	}
+	
+	public String getProcCode() {
+		return procCode;
+	}
+	
+	public void setProcName(String procNameIn) {
+		procName = procNameIn;
+	}
+	
+	public String getProcName() {
+		return procName;
+	}
+	
+	public void setProcDesc(String procDescIn) {
+		procDesc = procDescIn;
+	}
+	
+	public String getProcDesc() {
+		return procDesc;
+	}
+	
+	public void setCost(double costIn) {
+		cost = costIn;
+	}
+	
+	public double getCost() {
+		return cost;
+	}
+	
+	public void select(String identifier) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(
+				"Procedures.txt"));
+			String line;
+			
+			while((line = in.readLine()) != null) {
+				String[] interim = line.split(":");
+				if (interim[0].compareTo(identifier) == 0) {
+					this.setProcCode(interim[0]);
+					this.setProcName(interim[1]);
+					this.setProcDesc(interim[2]);
+					this.setCost(Double.parseDouble(interim[3]));
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void insert(String procCodeIn, String procNameIn, String procDescIn,
+					   double costIn) {
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
+								"Procedures.txt", true)));
+			out.println(""); //assuming there is no empty line in the file
+			out.print(procCodeIn + ":" + procNameIn + ":" + procDescIn 
+						+ ":" + costIn);
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	} //method only inserts at the end of the file, not in any particular order
+	
+	public void display() {
+		System.out.printf(this.toString());
+	}
+	
+	public String toString() {
+		return "" + getProcCode() + "\n" + getProcName() + "\n" + 
+				 getProcDesc() + "\n" + getCost() + "\n";
+	}
+	
+	public static void main(String args[]) {
+		Procedure pr1 = new Procedure();
+		pr1.select("P114");
+		pr1.display();
+		
+		Procedure pr2 = new Procedure();
+		pr2.insert("P119", "Polish", "Polish Teeth", 199.99);
+	} //end main
+} //end class
+
+/* **********************
+*     Alex Helfrich     *
+*     Comp 1302-04      *
+*     Appointment Class *
+*     Mini-Project 2    *
+********************** */
+
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.lang.Exception;
+
+public class Appointment {
+	private String apptDateTime;
+	private String patId;
+	private String dentId;
+	private String procCode;
+	
+	public Appointment() {
+		apptDateTime = "";
+		patId = "";
+		dentId = "";
+		procCode = "";
+	}
+	
+	public Appointment(String apptDateTimeIn, String patIdIn, String dentIdIn,
+					   String procCodeIn) {
+		apptDateTime = apptDateTimeIn;
+		patId = patIdIn;
+		dentId = dentIdIn;
+		procCode = procCodeIn;
+	}
+	
+	public void setApptDateTime(String apptDateTimeIn) {
+		apptDateTime = apptDateTimeIn;
+	}
+	
+	public String getApptDateTime() {
+		return apptDateTime;
+	} 
+	
+	public void setPatId(String patIdIn) {
+		patId = patIdIn;
+	}
+	
+	public String getPatId() {
+		return patId;
+	}
+	
+	public void setDentId(String dentIdIn) {
+		dentId = dentIdIn;
+	}
+	
+	public String getDentId() {
+		return dentId;
+	}
+	
+	public void setProcCode(String procCodeIn) {
+		procCode = procCodeIn;
+	}
+	
+	public String getProcCode() {
+		return procCode;
+	}
+	
+	public void select(String identifier) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(
+				"Appointments.txt"));
+			String line;
+			
+			while((line = in.readLine()) != null) {
+				String[] interim = line.split(":");
+				if (interim[0].compareTo(identifier) == 0) {
+					this.setPatId(interim[0]);
+					this.setApptDateTime(interim[1]);
+					this.setDentId(interim[2]);
+					this.setProcCode(interim[3]);
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void insert(String patIdIn, String apptDateTimeIn, String dentIdIn,
+					   String procCodeIn) {
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
+								"Appointments.txt", true)));
+			out.println(""); //assuming that there is no empty line in the file
+			out.print(patIdIn + ":" + apptDateTimeIn + ":" + dentIdIn 
+						+ ":" + procCodeIn);
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void display() {
+		System.out.printf(this.toString());
+	}
+	
+	public String toString() {
+		return "" + getApptDateTime() + "\n" + getPatId() + "\n" +
+						getDentId() + "\n" + getProcCode() + "\n";
+	}
+	
+	public static void main(String args[]) {
+		Appointment ar1 = new Appointment();
+		ar1.select("A900");
+		ar1.display();
+		
+		Appointment ar2 = new Appointment();
+		ar2.insert("A912", "1/16/2016-4pm", "D202", "P###");
+	}
+} //end class 
+
+/* **********************
+*     Alex Helfrich     *
+*     Comp 1302-04      *
+*     Person Class      *
+*     Mini-Project 2    *
+********************** */
+
+//Nothing has changed in this class
+
+public class Person {
+	private String id;
+	private String password;
+	private String firstName;
+	private String lastName;
+	private String email;
+	
+	public Person() {
+		id = "";
+		password = "";
+		firstName = "";
+		lastName = "";
+		email = "";
+	}
+	
+	public Person(String IDIN, String passIn, String firstIn, String lastIn,
+				  String eIn) {
+		id = IDIN;
+		password = passIn;
+		firstName = firstIn;
+		lastName = lastIn;
+		email = eIn;
+	}
+	
+	public void setID(String IDIN) {
+		id = IDIN;
+	}
+	
+	public String getID() {
+		return id;
+	}
+	
+	public void setPassword(String passIn) {
+		password = passIn;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setFirstName(String firstIn) {
+		firstName = firstIn;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public void setLastName(String lastIn) {
+		lastName = lastIn;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public void setEmail(String eIn) {
+		email = eIn;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void display() {
+		System.out.printf(this.toString());
+	}
+	
+	public String toString() {
+		String output = ("" + getID() + "\n" + getPassword() + "\n" + 
+						  getFirstName() + " " + getLastName() + "\n" +
+						  getEmail() + "\n");
+		return output;
+	}
+} //end class
+
+/* *****************************
+*     Alex Helfrich   		   *
+*     Comp 1302-04   		   *
+*     AppointmentList Class    *
+*     Mini-Project 2  		   *
+***************************** */
+
+//Nothing has changed in this class
+
+public class AppointmentList {
+	private Appointment[] list;
+	private int count;
+	
+	public AppointmentList() {
+		list = new Appointment[0];
+		count = 0;
+	}
+	
+	public void addAppointment(Appointment a) {
+		Appointment[] interim = new Appointment[count + 1];
+		for(int i = 0; i < count; i++) {
+			interim[i] = list[i];
+		}
+		interim[count] = a;
+		list = interim;
+		count++;
+	}
+	
+	public void display() {
+		System.out.printf(this.toString());
+	}
+	
+	public String toString() {
+		String output = "";
+		for(int i = 0; i < count; i++) {
+			output = output + list[i].toString();
+		}
+		output += "\n";
+		return output;
+	}
+}

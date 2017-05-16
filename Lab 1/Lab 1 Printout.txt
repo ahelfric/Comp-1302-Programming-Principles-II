@@ -1,0 +1,289 @@
+/* ****************************
+*		 Alex Helfrich        *
+*        Comp 1302-04         *
+*        Account Class        *
+**************************** */
+
+public class Account {
+	private int acctNo;
+	private String owner;
+	private double balance;
+	
+	public Account() 
+	{
+		setAcctNo(0);
+		setOwner("");
+		setBalance(0.0);
+	}
+	
+	public Account(int acctNoIn, String ownerIn, double balanceIn) 
+	{
+		setAcctNo(acctNoIn);
+		setOwner(ownerIn);
+		setBalance(balanceIn);
+	}
+	
+	public int getAcctNo() {
+		return acctNo;
+	}
+	
+	public void setAcctNo(int acctNoIn) {
+		acctNo = acctNoIn;
+	}
+	
+	public String getOwner() {
+		return owner;
+	}
+	
+	public void setOwner(String ownerIn) {
+		owner = ownerIn;
+	}
+	
+	public double getBalance() {
+		return balance;
+	}
+	
+	public void setBalance(double balanceIn) {
+		balance = balanceIn;
+	}
+	
+	public void display() 
+	{
+		String output = "" + getAcctNo() + "\n" + getOwner() + "\n" +
+					    getBalance() + "\n";
+		System.out.printf(output);
+	}
+	
+	public static void main(String args[]) 
+	{
+		Account a1;
+		a1 = new Account(90002, "Susan Slater", 450.00);
+		a1.display();
+	}
+}
+
+/* ****************************
+*		 Alex Helfrich        *
+*        Comp 1302-04         *
+*        Address Class        *
+**************************** */
+
+public class Address {
+	private String street;
+	private String city;
+	private String state;
+	private int zipcode;
+	
+	public Address() 
+	{
+		setStreet("");
+		setCity("");
+		setState("");
+		setZipcode(0);
+	}
+	
+	public Address(String streetIn, String cityIn, String stateIn, 
+				   int zipcodeIn) 
+	{
+		setStreet(streetIn);
+		setCity(cityIn);
+		setState(stateIn);
+		setZipcode(zipcodeIn);
+	}
+	
+	public String getStreet() {
+		return street;
+	}
+	
+	public void setStreet(String streetIn) {
+		street = streetIn;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+	
+	public void setCity(String cityIn) {
+		city = cityIn;
+	}
+	
+	public String getState() {
+		return state;
+	}
+	
+	public void setState(String stateIn) {
+		state = stateIn;
+	}
+	
+	public int getZipcode() {
+		return zipcode;
+	}
+	public void setZipcode(int zipcodeIn) {
+		zipcode = zipcodeIn;
+	}
+	
+	public void display() 
+	{
+		String output = "" + getStreet() + "\n" + getCity() + "\n" + getState() +
+						"\n" + getZipcode() + "\n";
+		System.out.printf(output);
+	}
+	
+	public static void main(String args[]) {
+		Address d1;
+		d1 = new Address("4578 Ramen Avenue", "Yakisoba City", 
+						 "The state of Japan", 12346);
+		d1.display();
+	}
+}
+
+/* ****************************
+*		 Alex Helfrich        *
+*        Comp 1302-04         *
+*        Course Class         *
+**************************** */
+
+public class Course {
+	private int courseID;
+	private String courseName;
+	private String description;
+	private int creditHours;
+	
+	public Course() 
+	{
+		setCourseID(0);
+		setCourseName("");
+		setCreditHours(0);
+		setDescription("");
+	}
+	
+	public Course(int courseIDIn, String courseNameIn, String descriptionIn,
+					int creditHoursIn) 
+	{
+		setCourseID(courseIDIn);
+		setCourseName(courseNameIn);
+		setDescription(descriptionIn);
+		setCreditHours(creditHoursIn);
+	}
+	
+	public int getCourseID() {
+		return courseID;
+	}
+	
+	public String getCourseName() {
+		return courseName;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public int getCreditHours() {
+		return creditHours;
+	}
+	
+	public void setCourseID(int courseIDIn) {
+		courseID = courseIDIn;
+	}
+	
+	public void setCourseName(String courseNameIn) {
+		courseName = courseNameIn;
+	}
+	
+	public void setDescription(String descriptionIn) {
+		description = descriptionIn;
+	}
+	
+	public void setCreditHours(int creditHoursIn) {
+		creditHours = creditHoursIn;
+	}
+	
+	public void display() 
+	{
+		String output = "" + this.getCourseID() + "\n" + this.getCourseName() + 
+					"\n" + this.getDescription() + "\n" + this.getCreditHours() 
+					+ "\n";
+		System.out.printf(output);
+	}
+	
+	public static void main(String args[]) {
+		Course c1;
+		c1 = new Course(1302, "Programming II", "Description", 4);
+		c1.display();
+	}
+}
+
+/* ****************************
+*		 Alex Helfrich        *
+*        Comp 1302-04         *
+*        Person Class         *
+**************************** */
+
+public class Person {
+	private String firstName;
+	private String lastName;
+	private String address;
+	private String email;
+	
+	public Person() 
+	{
+		setFirstName("");
+		setLastName("");
+		setAddress("");
+		setEmail("");
+	}
+	
+	public Person(String firstNameIn, String lastNameIn, String addressIn,
+				  String emailIn) 
+	{
+		setFirstName(firstNameIn);
+		setLastName(lastNameIn);
+		setAddress(addressIn);
+		setEmail(emailIn);
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public void setFirstName(String firstNameIn) {
+		firstName = firstNameIn;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public void setLastName(String lastNameIn) {
+		lastName = lastNameIn;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	
+	public void setAddress(String addressIn) {
+		address = addressIn;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String emailIn) {
+		email = emailIn;
+	}
+	
+	public void display() {
+		String output = getFirstName() + "\n" + getLastName() + "\n" + 
+						getAddress() + "\n" + getEmail() + "\n";
+		System.out.printf(output);
+	}
+	
+	public static void main(String args[]) {
+		Person p1;
+		p1 = new Person("Mario", "Mario", "1234 Mushroom Road", 
+						"mariomario@mushkingdom.net");
+		p1.display();
+	}
+}
