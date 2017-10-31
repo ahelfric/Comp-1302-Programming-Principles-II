@@ -1,3 +1,3 @@
-# Comp-1302-Programming-Principles-II
+# Programming-Principles
 
-Various programs from my Programming Principles II class at Kennesaw State
+Various simple Java programs/code
